@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./App.css";
+import "../css/Main.css";
 
 const HRnet = () => {
   const [firstName, setFirstName] = useState("");
@@ -29,7 +29,7 @@ const HRnet = () => {
     };
 
     console.log("Employee data saved:", employeeData);
-    setIsModalOpen(true); // Открыть модальное окно после сохранения
+    setIsModalOpen(true); // Ouvrir la fenêtre modale après l'enregistrement
   };
 
   return (
