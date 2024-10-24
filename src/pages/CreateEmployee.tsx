@@ -1,7 +1,11 @@
 import { useState } from "react";
-import "../css/Main.css";
+import "../css/CreateEmployee.css";
+import { AppDispatch } from "../redux/store";
+import { useDispatch } from "react-redux";
+import { createEmployee } from "../redux/employeeSlice";
+import { NavLink } from "react-router-dom";
 
-const HRnet = () => {
+const CreateEmployee = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
@@ -12,6 +16,8 @@ const HRnet = () => {
   const [zipCode, setZipCode] = useState("");
   const [department, setDepartment] = useState("Sales");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const dispatch: AppDispatch = useDispatch();
 
   const states = ["California", "Texas", "New York"];
 
@@ -27,9 +33,8 @@ const HRnet = () => {
       zipCode,
       department,
     };
-
-    console.log("Employee data saved:", employeeData);
-    setIsModalOpen(true); // Ouvrir la fenêtre modale après l'enregistrement
+    dispatch(createEmployee(employeeData));
+    setIsModalOpen(true);
   };
 
   return (
@@ -37,7 +42,7 @@ const HRnet = () => {
       <div className="title">
         <h1>HRnet</h1>
       </div>
-      <a href="/employee-list">View Current Employees</a>
+      <NavLink to="/employee-list">View Current Employees</NavLink>
       <h2>Create Employee</h2>
       <form id="create-employee" onSubmit={(e) => e.preventDefault()}>
         <label htmlFor="first-name">First Name</label>
@@ -142,4 +147,4 @@ const HRnet = () => {
   );
 };
 
-export default HRnet;
+export default CreateEmployee;

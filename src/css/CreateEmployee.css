@@ -1,21 +1,22 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f4f2; /* Light greenish background */
-  color: #333; /* Dark gray for text */
+  background-color: #f0f4f2;
+  color: #333;
+  margin: 0;
 }
 
 .container {
   width: 50%;
   margin: 0 auto;
   padding: 20px;
-  background-color: #fff; /* White background */
-  border: 2px solid #6ca966; /* Green border */
+  background-color: #fff;
+  border: 2px solid #6ca966;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .title h1 {
-  color: #6ca966; /* Main green from the image */
+  color: #6ca966;
   text-align: center;
 }
 
@@ -53,7 +54,7 @@ select {
 button {
   margin-top: 20px;
   padding: 10px;
-  background-color: #6ca966; /* Button green */
+  background-color: #6ca966;
   color: white;
   border: none;
   border-radius: 5px;
@@ -61,7 +62,13 @@ button {
 }
 
 button:hover {
-  background-color: #5a8a57; /* Darker green on hover */
+  background-color: #5a8a57;
+}
+
+.address {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
 }
 
 .modal {
