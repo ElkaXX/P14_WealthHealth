@@ -16,14 +16,14 @@ body {
 }
 
 .title h1 {
-  color: #6ca966;
+  color: #006400;
   text-align: center;
 }
 
 a {
   display: block;
   text-align: center;
-  color: #6ca966;
+  color: #006400;
   text-decoration: none;
   font-weight: bold;
   margin-bottom: 20px;
@@ -54,7 +54,7 @@ select {
 button {
   margin-top: 20px;
   padding: 10px;
-  background-color: #6ca966;
+  background-color: #006400;
   color: white;
   border: none;
   border-radius: 5px;
@@ -91,7 +91,7 @@ button:hover {
 }
 
 button.close {
-  background-color: #6ca966;
+  background-color: #006400;
   color: white;
   padding: 5px 10px;
   border: none;
@@ -100,5 +100,5 @@ button.close {
 }
 
 button.close:hover {
-  background-color: #5a8a57;
+  background-color: #006400;
 }

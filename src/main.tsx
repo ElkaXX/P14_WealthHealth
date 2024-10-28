@@ -1,26 +1,21 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
-import CreateEmployee from "./pages/CreateEmployee.tsx";
-import EmployeeList from "./pages/EmployeeList.tsx";
+import { persistStore } from "redux-persist";
+import { router } from "./Router";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <CreateEmployee />,
-  },
-  {
-    path: "/employee-list",
-    element: <EmployeeList />,
-  },
-]);
+const persistor = persistStore(store);
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <PersistGate loading={null} persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
     </Provider>
   </StrictMode>
 );

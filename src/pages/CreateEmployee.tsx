@@ -1,25 +1,73 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import "../css/CreateEmployee.css";
 import { AppDispatch } from "../redux/store";
 import { useDispatch } from "react-redux";
 import { createEmployee } from "../redux/employeeSlice";
 import { NavLink } from "react-router-dom";
+import { states } from "../consts/states";
+
+interface FormData {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  startDate: string;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  department: string;
+  isModalOpen: boolean;
+}
 
 const CreateEmployee = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [department, setDepartment] = useState("Sales");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const initialFormState = {
+    firstName: "",
+    lastName: "",
+    dateOfBirth: "",
+    startDate: "",
+    street: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    department: "Sales",
+    isModalOpen: false,
+  };
+  const [
+    {
+      firstName,
+      lastName,
+      dateOfBirth,
+      startDate,
+      state,
+      street,
+      city,
+      zipCode,
+      department,
+      isModalOpen,
+    },
+    setFormData,
+  ] = useState<FormData>(initialFormState);
+
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const toggleModal = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      isModalOpen: !prevData.isModalOpen,
+    }));
+  };
 
   const dispatch: AppDispatch = useDispatch();
 
-  const states = ["California", "Texas", "New York"];
+  const clearForm = () => setFormData(initialFormState);
 
   const saveEmployee = () => {
     const employeeData = {
@@ -34,7 +82,8 @@ const CreateEmployee = () => {
       department,
     };
     dispatch(createEmployee(employeeData));
-    setIsModalOpen(true);
+    clearForm();
+    toggleModal();
   };
 
   return (
@@ -49,32 +98,36 @@ const CreateEmployee = () => {
         <input
           type="text"
           id="first-name"
+          name="firstName"
           value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          onChange={handleInputChange}
         />
 
         <label htmlFor="last-name">Last Name</label>
         <input
           type="text"
           id="last-name"
+          name="lastName"
           value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          onChange={handleInputChange}
         />
 
         <label htmlFor="date-of-birth">Date of Birth</label>
         <input
           type="date"
           id="date-of-birth"
+          name="dateOfBirth"
           value={dateOfBirth}
-          onChange={(e) => setDateOfBirth(e.target.value)}
+          onChange={handleInputChange}
         />
 
         <label htmlFor="start-date">Start Date</label>
         <input
           type="date"
           id="start-date"
+          name="startDate"
           value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
+          onChange={handleInputChange}
         />
 
         <fieldset className="address">
@@ -84,28 +137,31 @@ const CreateEmployee = () => {
           <input
             type="text"
             id="street"
+            name="street"
             value={street}
-            onChange={(e) => setStreet(e.target.value)}
+            onChange={handleInputChange}
           />
 
           <label htmlFor="city">City</label>
           <input
             type="text"
             id="city"
+            name="city"
             value={city}
-            onChange={(e) => setCity(e.target.value)}
+            onChange={handleInputChange}
           />
 
           <label htmlFor="state">State</label>
           <select
             id="state"
+            name="state"
             value={state}
-            onChange={(e) => setState(e.target.value)}
+            onChange={handleInputChange}
           >
             <option value="">Select State</option>
             {states.map((st) => (
-              <option key={st} value={st}>
-                {st}
+              <option key={st.abbreviation} value={st.name}>
+                {st.name}
               </option>
             ))}
           </select>
@@ -114,16 +170,18 @@ const CreateEmployee = () => {
           <input
             type="number"
             id="zip-code"
+            name="zipCode"
             value={zipCode}
-            onChange={(e) => setZipCode(e.target.value)}
+            onChange={handleInputChange}
           />
         </fieldset>
 
         <label htmlFor="department">Department</label>
         <select
           id="department"
+          name="department"
           value={department}
-          onChange={(e) => setDepartment(e.target.value)}
+          onChange={handleInputChange}
         >
           <option value="Sales">Sales</option>
           <option value="Marketing">Marketing</option>
@@ -139,7 +197,7 @@ const CreateEmployee = () => {
         <div className="modal">
           <div className="modal-content">
             <h2>Employee Created!</h2>
-            <button onClick={() => setIsModalOpen(false)}>Close</button>
+            <button onClick={() => toggleModal()}>Close</button>
           </div>
         </div>
       )}

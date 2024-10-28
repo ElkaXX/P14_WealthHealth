@@ -7,9 +7,8 @@ import { NavLink } from "react-router-dom";
 
 const EmployeeList: React.FC = () => {
   const [search, setSearch] = useState<string>("");
-
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage] = useState<number>(10);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [sortConfig, setSortConfig] = useState<{
     key: keyof Employee;
     direction: "asc" | "desc" | null;
@@ -29,6 +28,7 @@ const EmployeeList: React.FC = () => {
       employee.firstName.toLowerCase().includes(search.toLowerCase()) ||
       employee.lastName.toLowerCase().includes(search.toLowerCase())
   );
+
   const handleSort = (key: keyof Employee) => {
     let direction: "asc" | "desc" = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {
@@ -36,6 +36,31 @@ const EmployeeList: React.FC = () => {
     }
     setSortConfig({ key, direction });
   };
+
+  const getSorting = (key: string) => (
+    <div>
+      <div
+        style={{
+          color:
+            sortConfig.direction === "asc" && sortConfig.key === key
+              ? "red"
+              : "inherit",
+        }}
+      >
+        ⇧
+      </div>
+      <div
+        style={{
+          color:
+            sortConfig.direction === "desc" && sortConfig.key === key
+              ? "red"
+              : "inherit",
+        }}
+      >
+        ⇩
+      </div>
+    </div>
+  );
 
   const sortedEmployees = [...filteredEmployees].sort((a, b) => {
     if (sortConfig.direction === null) return 0;
@@ -55,39 +80,96 @@ const EmployeeList: React.FC = () => {
 
   const totalPages = Math.ceil(employeeList.length / itemsPerPage);
 
-  // Обработчик для смены страниц
   const handlePageChange = (pageNumber: number) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
     }
   };
 
+  // Gestionnaire pour modifier le nombre d'éléments sur une page
+  const handleItemsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setItemsPerPage(parseInt(e.target.value));
+    setCurrentPage(1); // Réinitialiser à la première page lorsque le nombre d'éléments change
+  };
+
   return (
     <div className="table-container">
       <h2 className="title">Current Employees</h2>
       <div className="table-bar">
-        <select />
-        <input
-          type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={handleSearchChange}
-          className="search-input"
-        />
+        <div className="entries">
+          <label htmlFor="itemsPerPage">Show</label>
+          <select
+            id="itemsPerPage"
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+            className="entries-select"
+          >
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </select>
+          <span>entries</span>
+        </div>
+        <div>
+          <label htmlFor="search-input" className="visually-hidden">
+            Search Employees
+          </label>
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search..."
+            value={search}
+            onChange={handleSearchChange}
+            className="search-input"
+          />
+        </div>
       </div>
-      <div>
+      <main>
         <table className="employee-table">
           <thead>
             <tr>
-              <th onClick={() => handleSort("firstName")}>First Name</th>
-              <th onClick={() => handleSort("lastName")}>Last Name</th>
-              <th onClick={() => handleSort("startDate")}>Start Date</th>
-              <th onClick={() => handleSort("department")}>Department</th>
-              <th onClick={() => handleSort("dateOfBirth")}>Date of Birth</th>
-              <th onClick={() => handleSort("street")}>Street</th>
-              <th onClick={() => handleSort("city")}>City</th>
-              <th onClick={() => handleSort("state")}>State</th>
-              <th onClick={() => handleSort("zipCode")}>Zip Code</th>
+              <th onClick={() => handleSort("firstName")}>
+                <div className="header-cell">
+                  First Name
+                  {getSorting("firstName")}
+                </div>
+              </th>
+              <th onClick={() => handleSort("lastName")}>
+                <div className="header-cell">
+                  Last Name
+                  {getSorting("lastName")}
+                </div>
+              </th>
+              <th onClick={() => handleSort("startDate")}>
+                <div className="header-cell">
+                  Start Date {getSorting("startDate")}
+                </div>
+              </th>
+              <th onClick={() => handleSort("department")}>
+                <div className="header-cell">
+                  Department {getSorting("department")}
+                </div>
+              </th>
+              <th onClick={() => handleSort("dateOfBirth")}>
+                <div className="header-cell">
+                  Date of Birth {getSorting("dateOfBirth")}
+                </div>
+              </th>
+              <th onClick={() => handleSort("street")}>
+                <div className="header-cell">Street {getSorting("street")}</div>
+              </th>
+              <th onClick={() => handleSort("city")}>
+                <div className="header-cell">City {getSorting("city")}</div>
+              </th>
+              <th onClick={() => handleSort("state")}>
+                <div className="header-cell">State {getSorting("state")}</div>
+              </th>
+              <th onClick={() => handleSort("zipCode")}>
+                <div className="header-cell">
+                  Zip Code {getSorting("zipCode")}
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -112,7 +194,7 @@ const EmployeeList: React.FC = () => {
             )}
           </tbody>
         </table>
-        {/* Пагинация */}
+        {/* Pagination */}
         <div className="pagination">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -136,7 +218,7 @@ const EmployeeList: React.FC = () => {
             Next
           </button>
         </div>
-      </div>
+      </main>
       <NavLink to="/" className="back-link">
         Home
       </NavLink>
