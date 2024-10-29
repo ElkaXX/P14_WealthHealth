@@ -94,7 +94,7 @@ const EmployeeList: React.FC = () => {
 
   return (
     <div className="table-container">
-      <h2 className="title">Current Employees</h2>
+      <h1 className="title">Current Employees</h1>
       <div className="table-bar">
         <div className="entries">
           <label htmlFor="itemsPerPage">Show</label>

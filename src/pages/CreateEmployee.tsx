@@ -88,9 +88,9 @@ const CreateEmployee = () => {
 
   return (
     <div className="container">
-      <div className="title">
+      <header className="title">
         <h1>HRnet</h1>
-      </div>
+      </header>
       <NavLink to="/employee-list">View Current Employees</NavLink>
       <h2>Create Employee</h2>
       <form id="create-employee" onSubmit={(e) => e.preventDefault()}>
