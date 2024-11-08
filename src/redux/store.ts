@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import employeeReducer from "./employeeSlice";
+import modalReducer from "./modalSlice";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import { persistReducer } from "redux-persist";
 
@@ -11,6 +12,7 @@ const persistConfig = {
 
 const reducer = combineReducers({
   employee: employeeReducer,
+  modal: modalReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

@@ -1,0 +1,1 @@
+{"root":["./src/router.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/modal.tsx","./src/consts/states.ts","./src/pages/createemployee.tsx","./src/pages/employeelist.tsx","./src/redux/employeeslice.ts","./src/redux/modalslice.ts","./src/redux/store.ts","./src/types/index.ts"],"version":"5.6.3"}
