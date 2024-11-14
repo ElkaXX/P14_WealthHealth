@@ -5,30 +5,34 @@ import { RootState } from "../redux/store";
 import { Employee } from "../types";
 import { NavLink } from "react-router-dom";
 
+// Component to display a searchable, sortable, and paginated list of employees
 const EmployeeList: React.FC = () => {
-  const [search, setSearch] = useState<string>("");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [search, setSearch] = useState<string>(""); // Search term for filtering employees
+  const [currentPage, setCurrentPage] = useState<number>(1); // Current page in pagination
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10); // Items displayed per page
   const [sortConfig, setSortConfig] = useState<{
     key: keyof Employee;
     direction: "asc" | "desc" | null;
   }>({
-    key: "firstName",
+    key: "firstName", // Default sort by first name
     direction: null,
   });
 
-  const employeeList = useSelector((state: RootState) => state.employee.list);
+  const employeeList = useSelector((state: RootState) => state.employee.list); // Retrieve employee list from Redux store
 
+  // Update search term based on user input
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
+  // Filter employees by search term
   const filteredEmployees = employeeList.filter(
     (employee) =>
       employee.firstName.toLowerCase().includes(search.toLowerCase()) ||
-      employee.lastName.toLowerCase().includes(search.toLowerCase())
+      employee.lastName.toLowerCase().includes(search.toLowerCase()),
   );
 
+  // Handle sorting by column, toggling between ascending and descending
   const handleSort = (key: keyof Employee) => {
     let direction: "asc" | "desc" = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {
@@ -37,6 +41,7 @@ const EmployeeList: React.FC = () => {
     setSortConfig({ key, direction });
   };
 
+  // Display sorting arrows, indicating current sort direction
   const getSorting = (key: string) => (
     <div>
       <div
@@ -62,6 +67,7 @@ const EmployeeList: React.FC = () => {
     </div>
   );
 
+  // Sort employees by selected column and direction
   const sortedEmployees = [...filteredEmployees].sort((a, b) => {
     if (sortConfig.direction === null) return 0;
     const aKey = a[sortConfig.key];
@@ -71,25 +77,26 @@ const EmployeeList: React.FC = () => {
     return 0;
   });
 
+  // Calculate pagination indices
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentEmployees = sortedEmployees.slice(
     indexOfFirstItem,
-    indexOfLastItem
+    indexOfLastItem,
   );
-
   const totalPages = Math.ceil(employeeList.length / itemsPerPage);
 
+  // Update current page for pagination
   const handlePageChange = (pageNumber: number) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
     }
   };
 
-  // Gestionnaire pour modifier le nombre d'éléments sur une page
+  // Update number of items displayed per page
   const handleItemsPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setItemsPerPage(parseInt(e.target.value));
-    setCurrentPage(1); // Réinitialiser à la première page lorsque le nombre d'éléments change
+    setCurrentPage(1); // Reset to first page when items per page changes
   };
 
   return (
@@ -111,6 +118,7 @@ const EmployeeList: React.FC = () => {
           </select>
           <span>entries</span>
         </div>
+
         <div>
           <label htmlFor="search-input" className="visually-hidden">
             Search Employees
@@ -125,20 +133,19 @@ const EmployeeList: React.FC = () => {
           />
         </div>
       </div>
+
       <main>
         <table className="employee-table">
           <thead>
             <tr>
               <th onClick={() => handleSort("firstName")}>
                 <div className="header-cell">
-                  First Name
-                  {getSorting("firstName")}
+                  First Name {getSorting("firstName")}
                 </div>
               </th>
               <th onClick={() => handleSort("lastName")}>
                 <div className="header-cell">
-                  Last Name
-                  {getSorting("lastName")}
+                  Last Name {getSorting("lastName")}
                 </div>
               </th>
               <th onClick={() => handleSort("startDate")}>
@@ -173,6 +180,7 @@ const EmployeeList: React.FC = () => {
             </tr>
           </thead>
           <tbody>
+            {/* Display current page of employees */}
             {currentEmployees.length > 0 ? (
               currentEmployees.map((employee, index) => (
                 <tr key={index}>
@@ -194,7 +202,8 @@ const EmployeeList: React.FC = () => {
             )}
           </tbody>
         </table>
-        {/* Pagination */}
+
+        {/* Pagination controls */}
         <div className="pagination">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
@@ -219,6 +228,7 @@ const EmployeeList: React.FC = () => {
           </button>
         </div>
       </main>
+
       <NavLink to="/" className="back-link">
         Home
       </NavLink>

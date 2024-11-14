@@ -9,3 +9,6 @@ export interface Employee {
   state: string;
   zipCode: string;
 }
+export interface EmployeeState {
+  list: Employee[];
+}

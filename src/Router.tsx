@@ -5,6 +5,7 @@ const Modal = lazy(() => import("./components/Modal"));
 const CreateEmployee = lazy(() => import("./pages/CreateEmployee"));
 const EmployeeList = lazy(() => import("./pages/EmployeeList"));
 
+// Define the main application router
 const AppRouter = () => (
   <Router>
     <Routes>

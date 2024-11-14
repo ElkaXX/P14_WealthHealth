@@ -8,6 +8,7 @@ import { states } from "../consts/states";
 import { openModal } from "../redux/modalSlice";
 import { DatePicker } from "datepicker-plugin-wh";
 
+// Define structure of employee form data
 interface FormData {
   firstName: string;
   lastName: string;
@@ -21,6 +22,7 @@ interface FormData {
 }
 
 const CreateEmployee = () => {
+  // Initial empty state for form fields
   const initialFormState: FormData = {
     firstName: "",
     lastName: "",
@@ -33,27 +35,33 @@ const CreateEmployee = () => {
     department: "Sales",
   };
 
-  const [formData, setFormData] = useState<FormData>(initialFormState);
+  const [formData, setFormData] = useState<FormData>(initialFormState); // State for form data
   const dispatch: AppDispatch = useDispatch();
 
+  // Handler to update form data when input changes
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  // Handler to update date fields
   const handleDateChange = (field: string) => (date: string) => {
     setFormData((prevData) => ({ ...prevData, [field]: date }));
   };
 
+  // Show confirmation modal
   const showModal = () => {
     dispatch(openModal({ title: "Employee created!" }));
   };
 
+  // Reset form fields to initial state
   const clearForm = () => setFormData(initialFormState);
 
-  const saveEmployee = () => {
+  // Dispatch action to save employee and reset form on submit
+  const saveEmployee = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission behavior
     dispatch(createEmployee(formData));
     clearForm();
     showModal();
@@ -66,9 +74,10 @@ const CreateEmployee = () => {
       </header>
       <NavLink to="/employee-list">View Current Employees</NavLink>
       <h2>Create Employee</h2>
-      <form id="create-employee" onSubmit={(e) => e.preventDefault()}>
+      <form id="create-employee" onSubmit={saveEmployee}>
         <label htmlFor="first-name">First Name</label>
         <input
+          required
           type="text"
           id="first-name"
           name="firstName"
@@ -158,9 +167,9 @@ const CreateEmployee = () => {
           <option value="Human Resources">Human Resources</option>
           <option value="Legal">Legal</option>
         </select>
-      </form>
 
-      <button onClick={saveEmployee}>Save</button>
+        <button type="submit">Save</button>
+      </form>
     </div>
   );
 };

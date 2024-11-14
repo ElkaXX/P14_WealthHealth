@@ -1,23 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Employee } from "../types";
+import { Employee, EmployeeState } from "../types";
 
-export interface EmployeeState {
-  list: Employee[];
-}
-
+// Set the initial state for the employee slice
 const initialState: EmployeeState = {
   list: [],
 };
 
+// Create the employee slice using createSlice from Redux Toolkit
 export const employeeSlice = createSlice({
   name: "employee",
   initialState,
   reducers: {
+    // Define the reducer for creating an employee
     createEmployee: (state, action: PayloadAction<Employee>) => {
-      state.list = [...state.list, action.payload];
+      state.list = [...state.list, action.payload]; // Add the new employee to the list
     },
   },
 });
 
 export const { createEmployee } = employeeSlice.actions;
+
 export default employeeSlice.reducer;

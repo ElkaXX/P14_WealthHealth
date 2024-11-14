@@ -6,8 +6,8 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
-    /* Bundler mode */
-    "moduleResolution": "bundler",
+    /* Node resolution */
+    "moduleResolution": "node", // Updated for testing
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
@@ -18,7 +18,13 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Add Jest and Node types */
+    "types": ["node", "jest"],
+
+    /* Allow synthetic default imports */
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src"]
+  "include": ["src", "babel.config.js", "jest.config.ts", "jest.setup.ts"]
 }
