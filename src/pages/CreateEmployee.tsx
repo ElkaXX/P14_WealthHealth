@@ -87,6 +87,7 @@ const CreateEmployee = () => {
 
         <label htmlFor="last-name">Last Name</label>
         <input
+          required
           type="text"
           id="last-name"
           name="lastName"
@@ -113,6 +114,7 @@ const CreateEmployee = () => {
 
           <label htmlFor="street">Street</label>
           <input
+            required
             type="text"
             id="street"
             name="street"
@@ -122,6 +124,7 @@ const CreateEmployee = () => {
 
           <label htmlFor="city">City</label>
           <input
+            required
             type="text"
             id="city"
             name="city"
@@ -146,6 +149,7 @@ const CreateEmployee = () => {
 
           <label htmlFor="zip-code">Zip Code</label>
           <input
+            required
             type="number"
             id="zip-code"
             name="zipCode"
